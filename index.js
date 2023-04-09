@@ -3,12 +3,15 @@ require("console.table");
 const inquirer = require("inquirer");
 const express = require("express");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Poopdick09",
-  database: "business_db",
-});
+const connection = mysql.createConnection(
+  {
+    host: "localhost",
+    user: "root",
+    password: "Poopdick09",
+    database: "business_db",
+  },
+  console.log("Database Connected!")
+);
 
 connection.connect(function (err) {
   if (err) throw err;
