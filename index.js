@@ -1,7 +1,6 @@
 const mysql = require("mysql2");
 require("console.table");
 const inquirer = require("inquirer");
-const express = require("express");
 
 const connection = mysql.createConnection(
   {
@@ -66,5 +65,99 @@ function startApp() {
     });
 }
 
-// Initialize Program
-startApp();
+function viewEmployees() {
+  const sqlString = `
+  SELECT first_name, last_name, title, salary, name AS department
+  FROM employee
+  JOIN role
+  ON role_id = role.id
+  JOIN department
+  ON department_id = department.id`;
+
+  connection.query(sqlString, (err, data) => {
+    if (err) throw err;
+
+    console.log("\n");
+    console.table(data);
+    console.log("\n");
+
+    startApp();
+  });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        message: "What is the name of your new department",
+        name: "newDept",
+        type: "input",
+      },
+    ])
+    .then((answer) => {
+      const sqlString = `
+    INSERT INTO department (name)
+    VALUES (?)`;
+
+      connection.query(sqlString, [answer.newDept], (err, data) => {
+        if (err) throw err;
+        console.log("\n You added a department!");
+        startApp();
+      });
+    });
+}
+
+function addRole() {
+  // because role has a foreign key we need to 'load' the information of the foreign table to get the IDs that match the departments
+  // otherwise we're just guessing
+
+  //this is one way, though not the most optimal
+  connection.query("SELECT * FROM department", (err, data) => {
+    if (err) throw err;
+
+    console.log(data);
+    //inquirer has a setting for a list of choices that allows to illustrate a choice, but the value is different, for example I choose Bob, but the value is bob's id
+
+    const newOrganizedData = data.map((item) => ({
+      name: item.name,
+      value: item.id,
+    }));
+
+    console.log(newOrganizedData);
+
+    inquirer
+      .prompt([
+        {
+          message: "What is the new role?",
+          name: "newTitle",
+        },
+        {
+          message: "What is the Salary",
+          name: "newSalary",
+        },
+        {
+          message: "Which department does this role belong to?",
+          name: "newDeptId",
+          type: "list",
+          choices: newOrganizedData,
+        },
+      ])
+      .then((answers) => {
+        console.log(answers);
+        const sqlString = `
+        INSERT INTO role (title, salary, department_id)
+        VALUES (?, ? , ?)`;
+
+        connection.query(
+          sqlString,
+          [answers.newTitle, answers.newSalary, answers.newDeptId],
+          (err, data) => {
+            if (err) throw err;
+
+            console.log("added new role");
+            startApp();
+          }
+        );
+      });
+  });
+}
