@@ -168,7 +168,21 @@ function addDepartment() {
       });
     });
 }
+function viewRoles() {
+  const sqlString = `
+    SELECT title
+    FROM role`;
 
+  connection.query(sqlString, (err, data) => {
+    if (err) throw err;
+
+    console.log("\n");
+    console.table(data);
+    console.log("\n");
+
+    startApp();
+  });
+}
 function addRole() {
   // because role has a foreign key we need to 'load' the information of the foreign table to get the IDs that match the departments
   // otherwise we're just guessing
