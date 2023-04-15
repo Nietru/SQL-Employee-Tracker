@@ -16,8 +16,8 @@ SO THAT I can organize and plan my business
 ## Installation/Usage
 
 - In the CLI: `mysql -u root -p` and run `source [PATH to schema.sql]`
-- Next in the CLI: `npm install`
-- Next in the CLI: `node index.js`
+- Then seed the sql db.
+- Next in the CLI: `node index`
 
 There is an included seeds.sql file for development/testing use.
 
@@ -31,6 +31,8 @@ MIT, please review the github repository for any other inquiries.
 
 ## Video Link
 
+https://drive.google.com/file/d/1dxuHIRk4g7kwx6ovB_Px3IQ31S2GiCvW/view
+
 ## Questions
 
-Email: Nietru143@gmail.com
+Contact me via LinkedIn: https://www.linkedin.com/in/nietru143/
