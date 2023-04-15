@@ -84,6 +84,68 @@ function viewEmployees() {
     startApp();
   });
 }
+// COULD NOT FIGURE OUT :
+
+// function addEmployee() {
+//   inquirer
+//     .prompt([
+//       {
+//         message: "What is the first name of your new employee?",
+//         name: "firstName",
+//         type: "input",
+//       },
+//       {
+//         message: "What is the last name of your new employee?",
+//         name: "lastName",
+//         type: "input",
+//       },
+//       {
+//         message: "Select the role of your new employee:",
+//         name: "role",
+//         type: "list",
+//         choices: role.title,
+//       },
+//       {
+//         message: "Select your new employee's manager:",
+//         name: "manager",
+//         type: "list",
+//         choices: manager.title,
+//       },
+//     ])
+//     .then((answers) => {
+//       console.log(answers);
+//       const sqlString = `
+//       INSERT INTO employee (first_name, last_name, role_id, manager_id)
+//       VALUES (?, ? , ?, ?)`;
+
+//       connection.query(
+//         sqlString,
+//         [answers.firstName, answers.lastName, answers.role, answers.manager],
+//         (err, data) => {
+//           if (err) throw err;
+
+//           console.log("You added a new employee!");
+//           startApp();
+//         }
+//       );
+//     });
+// }
+
+function viewDepartments() {
+  const sqlString = `
+  SELECT id, name
+  FROM department`;
+
+  connection.query(sqlString, (err, data) => {
+    if (err) throw err;
+
+    console.log("\n");
+    console.table(data);
+    console.log("\n");
+
+    startApp();
+  });
+}
 
 function addDepartment() {
   inquirer
